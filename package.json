@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node -r dotenv/config src/index.js",
     "dev": "npx prisma db seed && node --watch src/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
