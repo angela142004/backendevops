@@ -1,8 +1,7 @@
-import "dotenv/config"; // esto aún puede quedar arriba
-import express from "express";
-import config from "./config/env.js"; // ✅ CAMBIO AQUÍ
+import "dotenv/config"; // ✅ ESTA LÍNEA VA PRIMERO
 
-const { PORT, CORS_ORIGIN, JWT_SECRET, API_KEY } = config;
+import express from "express";
+import { PORT, CORS_ORIGIN, JWT_SECRET, API_KEY } from "./config/env.js";
 
 import usarRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
