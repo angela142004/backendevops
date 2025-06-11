@@ -1,6 +1,7 @@
+import "dotenv/config"; // ✅ ESTA LÍNEA VA PRIMERO
+
 import express from "express";
 import { PORT, CORS_ORIGIN, JWT_SECRET, API_KEY } from "./config/env.js";
-import "dotenv/config.js";
 
 import usarRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
