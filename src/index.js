@@ -23,6 +23,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+console.log("API_KEY:", process.env.API_KEY); // 👈 Agrega aquí para probar
+
 if (!API_KEY) throw new Error("API_KEY no está definida");
 if (!JWT_SECRET) throw new Error("JWT_SECRET no está definida");
 
