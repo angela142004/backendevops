@@ -39,7 +39,6 @@ const validateApiKey = (req, res, next) => {
       error: "API Key inválida o no proporcionada",
     });
   }
-
   next();
 };
 

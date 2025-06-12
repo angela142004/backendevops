@@ -8,6 +8,7 @@ import {
   deleteUser,
 } from "../controllers/user.controller.js";
 import { loginUser } from "../controllers/auth.controller.js";
+import { createSubmission } from "../controllers/form.controller.js";
 import {
   authMiddleware,
   requireAdmin,
@@ -18,11 +19,11 @@ const router = Router();
 
 // Aplicar validación de API_KEY a todas las rutas
 
-
-
 router.use(validateApiKey);
 
 router.post("/login", loginUser); // Endpoint público
+router.post("/upform", createSubmission);
+
 // Aplica el middleware de autenticación a las rutas que lo requieren
 router.use(authMiddleware); // ✅ Middleware de autenticación
 

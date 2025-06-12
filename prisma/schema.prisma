@@ -53,3 +53,15 @@ model PostImage {
   image_url String
   is_cover  Boolean @default(false)
 }
+
+model FormSubmission {
+  id      Int      @id @default(autoincrement())
+  nombre  String
+  dni     String
+  telefono String
+  correo  String
+  grado   String
+  nivel   String  // Puede ser "inicial", "primaria" o "secundaria"
+  
+  createdAt DateTime @default(now())
+}
