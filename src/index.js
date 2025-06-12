@@ -1,10 +1,10 @@
-import "dotenv/config"; // ✅ ESTA LÍNEA VA PRIMERO
-
 import express from "express";
 import { PORT, CORS_ORIGIN, JWT_SECRET, API_KEY } from "./config/env.js";
+import "dotenv/config.js";
 
 import usarRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
+import formRoutes from "./routes/form.route.js";
 // import postImgRoutes from "./routes/postimg.routes.js";
 
 import morgan from "morgan";
@@ -23,12 +23,17 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-console.log("API_KEY:", process.env.API_KEY); // 👈 Agrega aquí para probar
+
+
 
 if (!API_KEY) throw new Error("API_KEY no está definida");
+
+
+
 if (!JWT_SECRET) throw new Error("JWT_SECRET no está definida");
 
 app.use("/prisma", usarRoutes);
+app.use("/prisma", formRoutes);
 app.use("/prisma", postRoutes);
 // app.use("/prisma", postImgRoutes);
 
