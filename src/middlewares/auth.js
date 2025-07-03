@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET, API_KEY } from "../config/env.js";
 
 function authMiddleware(req, res, next) {
-  // Permitir pasar sin autenticación durante pruebas
-  if (process.env.NODE_ENV === "test") return next();
+  // Permitir pasar sin autenticación durante pruebas SOLO si la ruta es pública
+  if (process.env.NODE_ENV === "test" && req.path === "/login") return next();
 
   if (req.path === "/post/page" || req.path.startsWith("/post/public/")) {
     return next(); // Permitir acceso
@@ -22,6 +22,8 @@ function authMiddleware(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
+  // Log para depuración del token recibido
+  console.log("req.user en requireAdmin:", req.user);
   if (!req.user?.is_admin) {
     return res.status(403).json({ error: "Solo administradores" });
   }

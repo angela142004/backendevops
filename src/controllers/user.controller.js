@@ -9,7 +9,9 @@ const prisma = new PrismaClient();
 export const getUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
-    res.json(users);
+    // Elimina password_hash de cada usuario
+    const usersSafe = users.map(({ password_hash, ...user }) => user);
+    res.json(usersSafe);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los usuarios" });
   }
@@ -25,7 +27,9 @@ export const getUserById = async (req, res) => {
       where: { id: Number(id) },
     });
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
-    res.json(user);
+    // Elimina el campo password_hash antes de responder
+    const { password_hash, ...userSafe } = user;
+    res.json(userSafe);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener el usuario" });
   }
@@ -46,7 +50,9 @@ export const createUser = async (req, res) => {
         is_admin: is_admin ?? false,
       },
     });
-    res.status(201).json(newUser);
+    // Elimina password_hash antes de responder
+    const { password_hash, ...userSafe } = newUser;
+    res.status(201).json(userSafe);
   } catch (error) {
     res.status(500).json({ error: "Error al crear el usuario" });
   }
@@ -71,7 +77,9 @@ export const updateUser = async (req, res) => {
       where: { id: Number(req.params.id) },
       data: dataToUpdate,
     });
-    res.status(200).json(updatedUser);
+    // Elimina password_hash antes de responder
+    const { password_hash, ...userSafe } = updatedUser;
+    res.status(200).json(userSafe);
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el usuario" });
   }

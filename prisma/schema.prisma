@@ -62,6 +62,6 @@ model FormSubmission {
   correo  String
   grado   String
   nivel   String  // Puede ser "inicial", "primaria" o "secundaria"
-  
+  colegio_procedencia String? // Colegio de procedencia, opcional
   createdAt DateTime @default(now())
 }

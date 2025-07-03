@@ -25,7 +25,9 @@ export const getImagesByPostId = async (req, res) => {
     });
     res.json(images);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener las imágenes de la publicación" });
+    res
+      .status(500)
+      .json({ error: "Error al obtener las imágenes de la publicación" });
   }
 };
 

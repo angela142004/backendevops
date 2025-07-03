@@ -4,7 +4,8 @@ const prisma = new PrismaClient();
 
 export const createSubmission = async (req, res) => {
   try {
-    const { nombre, dni, telefono, correo, grado, nivel } = req.body;
+    const { nombre, dni, telefono, correo, grado, nivel, colegio_procedencia } =
+      req.body;
 
     const newSubmission = await prisma.formSubmission.create({
       data: {
@@ -14,6 +15,7 @@ export const createSubmission = async (req, res) => {
         correo,
         grado,
         nivel,
+        colegio_procedencia, // Nuevo campo opcional
       },
     });
 
