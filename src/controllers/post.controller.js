@@ -27,15 +27,14 @@ export const getPosts = async (req, res) => {
  * Obtener un post por ID
  */
 export const getPostById = async (req, res) => {
-  const { id } = req.params;
-  const { userId, is_admin } = req.user; // Se obtiene el userId y is_admin del usuario autenticado
+  const { id: idParam } = req.params;
+  const { id, is_admin } = req.user; // Usar 'id' en vez de 'userId'
 
   try {
     // Definir las condiciones de búsqueda según el rol del usuario
     const whereCondition = {
-      id: Number(id),
-      // Si no es admin, agregar la condición de que el post debe pertenecerle
-      ...(is_admin ? {} : { userId: Number(userId) }),
+      id: Number(idParam),
+      ...(is_admin ? {} : { userId: Number(id) }),
     };
 
     // Buscar el post por ID con las condiciones apropiadas
@@ -45,11 +44,9 @@ export const getPostById = async (req, res) => {
         postType: true,
         images: true, // Imágenes del post
         user: {
-          // Relación con el usuario
           select: {
-            id: true, // Seleccionamos el ID del usuario
-            email: true, // Seleccionamos el correo electrónico del usuario
-            // No seleccionamos 'name' si no está en tu modelo de 'User'
+            id: true,
+            email: true,
           },
         },
       },
@@ -75,11 +72,11 @@ export const getPostById = async (req, res) => {
  */
 
 export const getMyPosts = async (req, res) => {
-  const { userId } = req.user; // Se asume que el middleware de autenticación agrega el userId al objeto req
+  const { id } = req.user; // Usar 'id' en vez de 'userId'
 
   try {
     const posts = await prisma.post.findMany({
-      where: { userId: Number(userId) },
+      where: { userId: Number(id) },
       include: {
         postType: true,
         images: true, // Incluye las imágenes asociadas a cada post
@@ -131,39 +128,50 @@ export const createPost = async (req, res) => {
       },
     });
 
-    res.status(201).json(newPost);
     // Crear las imágenes asociadas al post
-
     if (images && Array.isArray(images) && images.length > 0) {
       console.log("Creando imágenes:", images);
-
-      const postImages = await prisma.postImage.createMany({
+      await prisma.postImage.createMany({
         data: images.map((img) => ({
           postId: newPost.id,
           image_url: img.image_url,
           is_cover: img.is_cover || false,
         })),
       });
-
-      console.log("Imágenes creadas:", postImages);
-
+      console.log("Imágenes creadas para post", newPost.id);
       // Obtener el post completo con las imágenes
       const postWithImages = await prisma.post.findUnique({
         where: { id: newPost.id },
         include: {
-          postImages: true,
+          images: true,
           user: {
             select: {
               id: true,
-              name: true,
+              username: true,
               email: true,
             },
           },
           postType: true,
         },
       });
-
       return res.status(201).json(postWithImages);
+    } else {
+      // Si no hay imágenes, devolver el post simple
+      const postSimple = await prisma.post.findUnique({
+        where: { id: newPost.id },
+        include: {
+          images: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+          postType: true,
+        },
+      });
+      return res.status(201).json(postSimple);
     }
   } catch (error) {
     console.error("Error al crear el post:", error);
