@@ -5,6 +5,7 @@ import "dotenv/config.js";
 import usarRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import formRoutes from "./routes/form.route.js";
+import enlacesRoutes from "./routes/enlaces.routes.js";
 // import postImgRoutes from "./routes/postimg.routes.js";
 
 import morgan from "morgan";
@@ -28,6 +29,7 @@ if (!API_KEY) throw new Error("API_KEY no está definida");
 if (!JWT_SECRET) throw new Error("JWT_SECRET no está definida");
 
 app.use("/prisma", usarRoutes);
+app.use("/prisma", enlacesRoutes);
 app.use("/prisma", formRoutes);
 app.use("/prisma", postRoutes);
 // app.use("/prisma", postImgRoutes);

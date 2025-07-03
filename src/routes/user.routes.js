@@ -9,6 +9,12 @@ import {
 } from "../controllers/user.controller.js";
 import { loginUser } from "../controllers/auth.controller.js";
 import { createSubmission } from "../controllers/form.controller.js";
+
+import {
+  getEnlacesHome,
+  getEnlacesBlog,
+} from "../controllers/enlaces.controller.js";
+
 import {
   authMiddleware,
   requireAdmin,
@@ -23,6 +29,10 @@ router.use(validateApiKey);
 
 router.post("/login", loginUser); // Endpoint público
 router.post("/upform", createSubmission);
+
+// Rutas públicas
+router.get("/home", getEnlacesHome);
+router.get("/blog", getEnlacesBlog);
 
 // Aplica el middleware de autenticación a las rutas que lo requieren
 router.use(authMiddleware); // ✅ Middleware de autenticación
