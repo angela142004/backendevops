@@ -23,9 +23,13 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    // El token debe incluir id, email e is_admin para que el middleware funcione correctamente
     const token = jwt.sign(
-      { id: user.id, email: user.email, is_admin: user.is_admin },
+      {
+        userId: user.id,
+        userName: user.username,
+        email: user.email,
+        is_admin: user.is_admin,
+      },
       JWT_SECRET,
       { expiresIn: "30m" }
     );
