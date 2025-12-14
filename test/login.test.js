@@ -25,7 +25,7 @@ describe("POST /prisma/login", () => {
   it("debería responder con 200 y un token si las credenciales son válidas", async () => {
     const res = await request(app)
       .post("/prisma/login")
-      .set("x-api-key", process.env.API_KEY) // asegúrate que coincida con tu backend
+      .set("x-api-key", process.env.API_KEY) // asegúrate  que coincida con tu backend
       .send({
         email: "admin@mail.com",
         password: "admin123",
@@ -63,3 +63,29 @@ describe("POST /prisma/login", () => {
 afterAll(async () => {
   await prisma.$disconnect();
 });
+
+// // Integration test file - placeholder while main tests are commented out
+// describe('Login Integration Tests', () => {
+//   it('should have placeholder test', () => {
+//     expect(true).toBe(true);
+//   });
+// });
+
+/*
+
+//   it("debería responder con 400 si faltan campos", async () => {
+//     const res = await request(app)
+//       .post("/prisma/login")
+//       .set("x-api-key", process.env.API_KEY)
+//       .send({ email: "", password: "" });
+
+//     expect(res.statusCode).toBe(400);
+//     expect(res.body).toHaveProperty("error");
+//   });
+// });
+*/
+
+// afterAll(async () => {
+//   await prisma.$disconnect();
+// });
+
